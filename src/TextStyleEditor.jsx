@@ -5,6 +5,8 @@ import StyleColorGradient from './components/StyleColorGradient';
 import StyleNumber from './components/StyleNumber';
 import StyleSelect from './components/StyleSelect';
 import StyleStopPoints from './components/StyleStopPoints';
+import FontsLoader from './components/FontsLoader';
+import Translate from './components/TranslateLabel';
 import Panel from './components/Panel';
 import { deepCopy, deepEqual } from './utils';
 import m from 'mithril';
@@ -21,6 +23,8 @@ export default class TextStyleEditor {
         this.defaultText = 'Hello World';
         this.defaultBG = '#ffffff';
         this.style = new PIXI.TextStyle();
+        this.FontsLoader = new FontsLoader(this);
+        this.Translate = new Translate(this);
 
         // The default dropShadowColor is "#000000",
         // this makes it consistent with fill, strokeFill, etc
@@ -78,7 +82,6 @@ export default class TextStyleEditor {
 
     view() {
         const codeColor = this.codeColor.bind(this);
-
         return <div oncreate={this.init.bind(this)}>
             <nav class='controls'>
                 <div class='container-fluid'>
@@ -92,13 +95,15 @@ export default class TextStyleEditor {
                         </button>
                     </h3>
                     <Panel id='text' name='Text' selected='true'>
-                        <textarea class='form-control'
+                        {this.Translate.view(this)}
+                        <textarea class='form-control'npm run-script build
                             id='input'
                             autofocus='true'
                             oninput={m.withAttr('value', this.onText.bind(this))}
                             value={this.text.text}></textarea>
                     </Panel>
                     <Panel id='font' name='Font' selected='true'>
+                        {this.FontsLoader.view(this)}
                         <StyleSelect parent={this} id='fontFamily' name='Font Family' options={[
                             'Arial',
                             'Arial Black',
